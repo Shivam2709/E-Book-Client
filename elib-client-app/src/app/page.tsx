@@ -1,7 +1,7 @@
-import Image from "next/image";
+import Banner from "@/components/Banner";
 
 export default function Home() {
   return (
-    <h1>Welcom to elib clienr app</h1>
+    <Banner />
   );
 }
