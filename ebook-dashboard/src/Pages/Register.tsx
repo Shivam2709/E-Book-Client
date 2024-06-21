@@ -14,20 +14,22 @@ import { LoaderCircle } from "lucide-react";
 import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import useTokenStore from "@/store";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-
+  const setToken = useTokenStore((state) => state.setToken);
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
   const mutation = useMutation({
     mutationFn: register,
-    onSuccess: () => {
+    onSuccess: (response) => {
       toast.success("User Created Successfully", {
         position: "top-center",
       });
+      setToken(response.data.accessToken);
       // redirect to dashboard
       navigate("/dashboard/home");
     },

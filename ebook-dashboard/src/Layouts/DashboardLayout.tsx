@@ -31,9 +31,15 @@ import {
 } from "lucide-react";
 import { Link, Outlet } from "react-router-dom";
 import { ModeToggle } from "@/DarkTheme/mode-toggle";
-// import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+import useTokenStore from "@/store";
 const DashboardLayout = () => {
-  // const navigate = useNavigate();
+
+  const token = useTokenStore((state) => state.token);
+  
+  if(token === '') {
+    return <Navigate to={'/auth/login'} replace />
+  }
   return (
         <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
           <div className="hidden border-r bg-muted/40 md:block">
