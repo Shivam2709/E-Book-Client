@@ -11,17 +11,23 @@ import { Label } from "@/components/ui/label";
 import { login } from "@/http/api";
 import { useMutation } from "@tanstack/react-query";
 import { useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const LoginPage = () => {
+    const navigate = useNavigate();
+
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
 
     const mutation = useMutation({
         mutationFn: login,
         onSuccess: () => {
-            console.log('Login successful')
+          toast.success("User login Successfully", {
+            position: "top-center"
+          });
+          // redirect to dashboard
+          navigate("/dashboard/home");
         }
     })
 
@@ -31,7 +37,9 @@ const LoginPage = () => {
         // console.log("Data", {email, password});
 
         if(!email || !password) {
-            return toast.warning("Email and Password is required");
+            return toast.warning("Email and Password is required", {
+                position: "top-center"
+            });
         }
 
         mutation.mutate({ email, password })
