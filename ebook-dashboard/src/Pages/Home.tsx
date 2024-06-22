@@ -1,4 +1,6 @@
 import { Button } from "@/components/ui/button";
+import { PlusCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
   return (
@@ -17,7 +19,14 @@ const HomePage = () => {
           <p className="text-sm text-muted-foreground">
             You can start selling as soon as you add a book.
           </p>
-          <Button className="mt-4">Add Book</Button>
+          <Link to={"/dashboard/books/create"}>
+          <Button size="sm" className="h-8 gap-1">
+            <PlusCircle className="h-3.5 w-3.5" />
+            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+              Add Books
+            </span>
+          </Button>
+        </Link>
         </div>
       </div>
     </>

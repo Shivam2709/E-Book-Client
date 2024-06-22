@@ -33,7 +33,8 @@ import {
 import { getBooks } from "@/http/api";
 import { Book } from "@/types";
 import { useQuery } from "@tanstack/react-query";
-import { LoaderCircle, MoreHorizontal } from "lucide-react";
+import { LoaderCircle, MoreHorizontal, PlusCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const BooksPage = () => {
   const { data, isLoading, isError } = useQuery({
@@ -44,17 +45,28 @@ const BooksPage = () => {
 
   return (
     <div>
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/dashboard/home">Home</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>Books</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+      <div className="flex items-center justify-between">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/dashboard/home">Home</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Books</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+        <Link to={"/dashboard/books/create"}>
+          <Button size="sm" className="h-8 gap-1">
+            <PlusCircle className="h-3.5 w-3.5" />
+            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+              Add Books
+            </span>
+          </Button>
+        </Link>
+      </div>
+
       <Card className="mt-6">
         <CardHeader>
           <CardTitle>Books</CardTitle>
@@ -84,16 +96,22 @@ const BooksPage = () => {
               {isLoading ? (
                 <TableRow>
                   <TableCell colSpan={6} className="text-center py-4">
-                    <LoaderCircle className="animate-spin mx-auto" style={{ width: '68px', height: '68px' }} />
+                    <LoaderCircle
+                      className="animate-spin mx-auto"
+                      style={{ width: "68px", height: "68px" }}
+                    />
                   </TableCell>
                 </TableRow>
               ) : isError ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center py-4 text-red-600">
+                  <TableCell
+                    colSpan={6}
+                    className="text-center py-4 text-red-600"
+                  >
                     Failed to load books. Please try again later.
                   </TableCell>
                 </TableRow>
-              ) :(
+              ) : (
                 data?.data.map((book: Book) => (
                   <TableRow key={book._id}>
                     <TableCell className="hidden sm:table-cell">
@@ -105,20 +123,24 @@ const BooksPage = () => {
                         width="64"
                       />
                     </TableCell>
-                    <TableCell className="font-medium">
-                      {book.title}
-                    </TableCell>
+                    <TableCell className="font-medium">{book.title}</TableCell>
                     <TableCell>
                       <Badge variant="outline">{book.genre}</Badge>
                     </TableCell>
-                    <TableCell className="hidden md:table-cell">{book.author.name}</TableCell>
                     <TableCell className="hidden md:table-cell">
-                      {new Date(book.createdAt).toLocaleString('en-asia')}
+                      {book.author.name}
+                    </TableCell>
+                    <TableCell className="hidden md:table-cell">
+                      {new Date(book.createdAt).toLocaleString("en-asia")}
                     </TableCell>
                     <TableCell>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button aria-haspopup="true" size="icon" variant="ghost">
+                          <Button
+                            aria-haspopup="true"
+                            size="icon"
+                            variant="ghost"
+                          >
                             <MoreHorizontal className="h-4 w-4" />
                             <span className="sr-only">Toggle menu</span>
                           </Button>
